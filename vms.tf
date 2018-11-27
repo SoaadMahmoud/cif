@@ -546,4 +546,402 @@ resource "azurerm_virtual_machine_data_disk_attachment" "HTTP_Coffre-disk2" {
 }
 
 
+resource "azurerm_virtual_machine" "BDD_RF" {
+  name                  = "BDD_RF"
+  location              = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name   = "${azurerm_resource_group.rgfour.name}"
+  network_interface_ids = ["${azurerm_network_interface.BDD_RF-nic1.id}"]
+  vm_size               = "Standard_D2_v2"
+  
+  storage_image_reference {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "7.2"
+    version   = "latest"
 
+  }
+  storage_os_disk {
+    name              = "BDD_RF-osdisk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "StandardSSD_LRS"
+  }
+  os_profile {
+    computer_name  = "BDD_RF"
+    admin_username = "c9admin"
+    admin_password = "C9superC0mpl3x"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+    ssh_keys {
+      path     = "/home/c9admin/.ssh/authorized_keys"
+      key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+    }
+  }
+
+
+resource "azurerm_network_interface" "BDD_RF-nic1" {
+  name                = "BDD_RF-nic1"
+  location            = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name = "${azurerm_resource_group.rgfour.name}"
+
+  ip_configuration {
+    name                          = "BDD_RFipcfg1"
+    subnet_id                     = "${azurerm_subnet.mgmt.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+
+resource "azurerm_managed_disk" "BDD_RF-disk1" {
+  name                 = "BDD_RF-disk1"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 10
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "BDD_RF-disk1" {
+  managed_disk_id    = "${azurerm_managed_disk.BDD_RF-disk1.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.BDD_RF.id}"
+  lun                = "1"
+  caching            = "ReadWrite"
+}
+
+
+resource "azurerm_managed_disk" "BDD_RF-disk2" {
+  name                 = "BDD_RF-disk2"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "StandardSSD_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 20
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "BDD_RF-disk2" {
+  managed_disk_id    = "${azurerm_managed_disk.BDD_RF-disk2.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.BDD_RF.id}"
+  lun                = "2"
+  caching            = "ReadWrite"
+}
+  resource "azurerm_virtual_machine" "CoreBanking_RF" {
+  name                  = "CoreBanking_RF"
+  location              = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name   = "${azurerm_resource_group.rgfour.name}"
+  network_interface_ids = ["${azurerm_network_interface.CoreBanking_RF-nic1.id}"]
+  vm_size               = "Standard_D2_v2"
+  
+  storage_image_reference {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "7.2"
+    version   = "latest"
+
+  }
+  storage_os_disk {
+    name              = "CoreBanking_RF-osdisk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "StandardSSD_LRS"
+  }
+  os_profile {
+    computer_name  = "CoreBanking_RF"
+    admin_username = "c9admin"
+    admin_password = "C9superC0mpl3x"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+    ssh_keys {
+      path     = "/home/c9admin/.ssh/authorized_keys"
+      key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+    }
+  }
+
+}
+
+resource "azurerm_network_interface" "CoreBanking_RF-nic1" {
+  name                = "CoreBanking_RF-nic1"
+  location            = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name = "${azurerm_resource_group.rgfour.name}"
+
+  ip_configuration {
+    name                          = "CoreBanking_RFipcfg1"
+    subnet_id                     = "${azurerm_subnet.mgmt.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+
+resource "azurerm_managed_disk" "CoreBanking_RF-disk1" {
+  name                 = "CoreBanking_RF-disk1"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 10
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "CoreBanking_RF-disk1" {
+  managed_disk_id    = "${azurerm_managed_disk.CoreBanking_RF-disk1.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.CoreBanking_RF.id}"
+  lun                = "1"
+  caching            = "ReadWrite"
+}
+
+
+resource "azurerm_managed_disk" "CoreBanking_RF-disk2" {
+  name                 = "CoreBanking_RF-disk2"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "StandardSSD_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 20
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "CoreBanking_RF-disk2" {
+  managed_disk_id    = "${azurerm_managed_disk.CoreBanking_RF-disk2.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.CoreBanking_RF.id}"
+  lun                = "2"
+  caching            = "ReadWrite"
+}
+resource "azurerm_virtual_machine" "X3S_RF" {
+  name                  = "X3S_RF"
+  location              = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name   = "${azurerm_resource_group.rgfour.name}"
+  network_interface_ids = ["${azurerm_network_interface.X3S_RF-nic1.id}"]
+  vm_size               = "Standard_D2_v2"
+  
+  storage_image_reference {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "7.2"
+    version   = "latest"
+
+  }
+  storage_os_disk {
+    name              = "X3S_RF-osdisk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "StandardSSD_LRS"
+  }
+  os_profile {
+    computer_name  = "X3S_RF"
+    admin_username = "c9admin"
+    admin_password = "C9superC0mpl3x"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+    ssh_keys {
+      path     = "/home/c9admin/.ssh/authorized_keys"
+      key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+    }
+  }
+
+}
+
+resource "azurerm_network_interface" "X3S_RF-nic1" {
+  name                = "X3S_RF-nic1"
+  location            = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name = "${azurerm_resource_group.rgfour.name}"
+
+  ip_configuration {
+    name                          = "X3S_RFipcfg1"
+    subnet_id                     = "${azurerm_subnet.mgmt.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+
+resource "azurerm_managed_disk" "X3S_RF-disk1" {
+  name                 = "X3S_RF-disk1"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 10
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "X3S_RF-disk1" {
+  managed_disk_id    = "${azurerm_managed_disk.X3S_RF-disk1.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.X3S_RF.id}"
+  lun                = "1"
+  caching            = "ReadWrite"
+}
+
+
+resource "azurerm_managed_disk" "X3S_RF-disk2" {
+  name                 = "X3S_RF-disk2"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "StandardSSD_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 20
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "X3S_RF-disk2" {
+  managed_disk_id    = "${azurerm_managed_disk.X3_RF-disk2.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.X3_RF.id}"
+  lun                = "2"
+  caching            = "ReadWrite"
+}
+resource "azurerm_virtual_machine" "X3_RF" {
+  name                  = "X3S_RF"
+  location              = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name   = "${azurerm_resource_group.rgfour.name}"
+  network_interface_ids = ["${azurerm_network_interface.X3_RF-nic1.id}"]
+  vm_size               = "Standard_D2_v2"
+  
+  storage_image_reference {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "7.2"
+    version   = "latest"
+
+  }
+  storage_os_disk {
+    name              = "X3_RF-osdisk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "StandardSSD_LRS"
+  }
+  os_profile {
+    computer_name  = "X3_RF"
+    admin_username = "c9admin"
+    admin_password = "C9superC0mpl3x"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+    ssh_keys {
+      path     = "/home/c9admin/.ssh/authorized_keys"
+      key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+    }
+  }
+
+}
+
+resource "azurerm_network_interface" "X3_RF-nic1" {
+  name                = "X3_RF-nic1"
+  location            = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name = "${azurerm_resource_group.rgfour.name}"
+
+  ip_configuration {
+    name                          = "X3_RFipcfg1"
+    subnet_id                     = "${azurerm_subnet.mgmt.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+
+resource "azurerm_managed_disk" "X3_RF-disk1" {
+  name                 = "X3_RF-disk1"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 10
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "X3_RF-disk1" {
+  managed_disk_id    = "${azurerm_managed_disk.X3_RF-disk1.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.X3_RF.id}"
+  lun                = "1"
+  caching            = "ReadWrite"
+}
+
+
+resource "azurerm_managed_disk" "X3_RF-disk2" {
+  name                 = "X3S_RF-disk2"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "StandardSSD_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 20
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "X3_RF-disk2" {
+  managed_disk_id    = "${azurerm_managed_disk.X3_RF-disk2.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.X3_RF.id}"
+  lun                = "2"
+  caching            = "ReadWrite"
+}  
+resource "azurerm_virtual_machine" "BPM_RF" {
+  name                  = "BPM_RF"
+  location              = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name   = "${azurerm_resource_group.rgfour.name}"
+  network_interface_ids = ["${azurerm_network_interface.BPM_RF-nic1.id}"]
+  vm_size               = "Standard_D2_v2"
+  
+  storage_image_reference {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "7.2"
+    version   = "latest"
+
+  }
+  storage_os_disk {
+    name              = "BPM_RF-osdisk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "StandardSSD_LRS"
+  }
+  os_profile {
+    computer_name  = "BPM_RF"
+    admin_username = "c9admin"
+    admin_password = "C9superC0mpl3x"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+    ssh_keys {
+      path     = "/home/c9admin/.ssh/authorized_keys"
+      key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+    }
+  }
+
+}
+
+resource "azurerm_network_interface" "BPM_RF-nic1" {
+  name                = "BPM_RF-nic1"
+  location            = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name = "${azurerm_resource_group.rgfour.name}"
+
+  ip_configuration {
+    name                          = "BPM_RFipcfg1"
+    subnet_id                     = "${azurerm_subnet.mgmt.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+
+resource "azurerm_managed_disk" "BPM_RF-disk1" {
+  name                 = "BPM_RF-disk1"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 10
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "BPM_RF-disk1" {
+  managed_disk_id    = "${azurerm_managed_disk.BPM_RF-disk1.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.BPM_RF.id}"
+  lun                = "1"
+  caching            = "ReadWrite"
+}
+
+
+resource "azurerm_managed_disk" "BPM_RF-disk2" {
+  name                 = "BPM_RF-disk2"
+  location             = "${azurerm_resource_group.rgfour.location}"
+  resource_group_name  = "${azurerm_resource_group.rgfour.name}"
+  storage_account_type = "StandardSSD_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 20
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "BPM_RF-disk2" {
+  managed_disk_id    = "${azurerm_managed_disk.BPM_RF-disk2.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.BPM_RF.id}"
+  lun                = "2"
+  caching            = "ReadWrite"
+}
